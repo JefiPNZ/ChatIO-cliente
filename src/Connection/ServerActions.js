@@ -1,15 +1,16 @@
 import Server from './ServerConnection';
 
 export default {
-    writeMessage(message) {
+    writeMessage(message, ) {
         if(typeof text !== 'string'){
-            return Server.write(JSON.stringify(message));
-        }
-        return Server.write(text);
+            Server.write(JSON.stringify(message)+"\n");
+        }else{
+            Server.write(text+"\n");
+        }  
     },
-    async awaitResponse() {
+    async awaitResponse(callback) {
         Server.on('data', data => {
-            console.log('message was received', JSON.parse(data.toString('utf8')));
+            callback(data);
         });
     }
 }

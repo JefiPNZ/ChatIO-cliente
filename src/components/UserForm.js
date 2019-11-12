@@ -2,7 +2,14 @@ import React from 'react';
 import { SafeAreaView, Text, TextInput, View } from 'react-native';
 import Styles from '../styles/S.UserForm';
 
-export default ({ handleChange, user }) => {
+export default ({ setUser, user }) => {
+
+    const handleChange = (text, name) => {
+        const aux = { ...user };
+        aux[name] = text;
+        setUser(aux);
+    };
+
     return (
         <SafeAreaView >
             <View style={Styles.container}>

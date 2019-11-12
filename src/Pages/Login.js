@@ -7,10 +7,26 @@ import ServerActions from '../Connection/ServerActions';
 export default ({ navigation }) => {
 
     const [login, setLogin] = useState({ name: '', password: '' });
+    const [contacts, setContacts] = useState([]);
 
     const handleSubmit = () => {
-        ServerActions.writeMessage(login);
-        navigation.navigate('Contacts');
+        // ServerActions.writeMessage(login);
+        // ServerActions.awaitResponse(data =>{
+        //   console.log('message was received', JSON.parse(data.toString('utf8')));
+        // setContacts(JSON.parse(data.toString('utf8')))
+
+        // }); 
+        navigation.navigate('Contacts', {
+            contacts: [
+                { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '0' },
+                { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '1' },
+                { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '2' },
+                { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '3' },
+                { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '4' },
+                { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '5' },
+                { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '6' },
+            ]
+        });
         setLogin({ name: '', password: '' });
     }
     const handleSignUp = () => {

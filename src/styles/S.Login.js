@@ -23,7 +23,6 @@ export default StyleSheet.create({
     title:{
         fontSize: 44,
         color: '#ff5900',
-        fontFamily: 'Roboto Slab',
     },
     titleContainer: {
         marginBottom: 50

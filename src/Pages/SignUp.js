@@ -13,19 +13,12 @@ export default ({ navigation }) => {
         birthDate: '',
     });
 
-    const handleChange = (text, name) => {
-        const aux = { ...user };
-        aux[name] = text;
-        setUser(aux);
-    };
-
     const handleBack = () => {
         navigation.navigate('Login');
     };
     const handleSubmit = () => {
-        console.log(user);
         ServerActions.writeMessage(user);
-        navigation.navigate('Contacts');
+        navigation.navigate('Login');
         setUser({
             name: '',
             email: '',
@@ -38,7 +31,7 @@ export default ({ navigation }) => {
             <Text style={GlobalStyles.header}>
                 Cadastre-se
             </Text>
-            <UserForm handleChange={handleChange} user={user} />
+            <UserForm setUser={setUser} user={user} />
             <TouchableOpacity style={GlobalStyles.formButton} onPress={handleSubmit}>
                 <Text style={GlobalStyles.formButtonLabel}>
                     Cadastrar

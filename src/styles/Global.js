@@ -14,12 +14,13 @@ export default StyleSheet.create({
         color: '#fff',
         fontWeight: "bold",
         fontSize: 30,
+        fontFamily: 'RobotoSlab-Regular',
     },
     header: {
         fontWeight: 'bold',
         fontSize: 35,
         color: '#ff5900',
-        alignSelf:'center',
+        alignSelf:'center', 
     },
     paddingView:{
         padding: 15,

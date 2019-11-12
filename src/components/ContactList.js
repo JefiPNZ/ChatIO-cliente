@@ -4,10 +4,12 @@ import Styles from '../styles/S.ContactList';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default ({ contacts }) => {
-
     const [showModal, handleModal] = useState(false);
 
-    const handleAddContact = () => {
+    const handleMessageContact = () => {
+        handleModal(!showModal);
+    };
+    const handleRemoveContact = (contactId) => {
         handleModal(!showModal);
     };
 
@@ -15,30 +17,22 @@ export default ({ contacts }) => {
         <>
             <Modal visible={showModal}>
                 <View>
-                <TouchableOpacity onPress={handleAddContact} style={{height: 500, width: '100%', backgroundColor: '#ff1599'}}>
+                <TouchableOpacity onPress={()=>handleModal(!showModal)} style={{height: 500, width: '100%', backgroundColor: '#ff1599'}}>
                     <Text>Fechar</Text>
                 </TouchableOpacity>
                 </View>
             </Modal>
             <FlatList
-                data={[
-                    { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '0' },
-                    { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '1' },
-                    { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '2' },
-                    { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '3' },
-                    { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '4' },
-                    { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '5' },
-                    { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '6' },
-                ]}
+                data={contacts}
                 renderItem={contact => {
                     const { item } = contact;
                     return (
                         <View style={Styles.container} key={item.id}>
                             <View style={Styles.iconContainer}>
-                                <TouchableOpacity onPress={handleAddContact}>
-                                    <Icon style={Styles.icon} name="user-check" size={25} color="#000" />
+                                <TouchableOpacity onPress={handleMessageContact}>
+                                    <Icon style={Styles.icon} name="comment-dots" size={25} color="#000" />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={handleAddContact}>
+                                <TouchableOpacity onPress={() => handleRemoveContact(item.id)}>
                                     <Icon style={Styles.icon} name="user-minus" size={25} color="#000" />
                                 </TouchableOpacity>
                             </View>

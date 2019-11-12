@@ -26,5 +26,5 @@ export default StyleSheet.create({
     },
     textContainer: {
         width: '80%',
-    }
+    },
 });
