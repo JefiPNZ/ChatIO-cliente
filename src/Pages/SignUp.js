@@ -3,11 +3,12 @@ import { SafeAreaView, Text, KeyboardAvoidingView, TouchableOpacity } from 'reac
 import UserForm from '../components/UserForm';
 import GlobalStyles from '../styles/Global';
 import ServerActions from '../Connection/ServerActions';
+import {CREATE_USER_MESSAGE} from '../Connection/MessageTypes';
 
 export default ({ navigation }) => {
 
     const [user, setUser] = useState({
-        name: '',
+        nickname: '',
         email: '',
         password: '',
         birthDate: '',
@@ -17,10 +18,10 @@ export default ({ navigation }) => {
         navigation.navigate('Login');
     };
     const handleSubmit = () => {
-        ServerActions.writeMessage(user);
+        ServerActions.writeMessage(user, CREATE_USER_MESSAGE);
         navigation.navigate('Login');
         setUser({
-            name: '',
+            nickname: '',
             email: '',
             password: '',
             birthDate: '',

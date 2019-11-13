@@ -1,11 +1,11 @@
 import Server from './ServerConnection';
 
 export default {
-    writeMessage(message, ) {
-        if(typeof text !== 'string'){
-            Server.write(JSON.stringify(message)+"\n");
+    writeMessage(message, messageType = '') {
+        if(typeof message !== 'string'){
+            Server.write(messageType+JSON.stringify(message)+"\n");
         }else{
-            Server.write(text+"\n");
+            Server.write(messageType+message+"\n");
         }  
     },
     async awaitResponse(callback) {

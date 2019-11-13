@@ -4,37 +4,63 @@ import Styles from '../styles/S.ContactList';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DocumentPicker from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
+import ServerActions from '../Connection/ServerActions';
+import { REMOVE_CONTACT_MESSAGE } from '../Connection/MessageTypes';
 
-export default ({ contacts }) => {
+export default ({ contacts, navigation }) => {
     const [showModal, handleModal] = useState(false);
+    const [selectedContact, setSelectedContact] = useState({});
 
     const handleMessageContact = () => {
-        handleModal(!showModal);
+        navigation.navigate('Chat');
     };
-    const handleRemoveContact = (contactId) => {
+    const handleRemoveContact = () => {
+        const { id } = selectedContact;
+        ServerActions.writeMessage(id, REMOVE_CONTACT_MESSAGE);
         handleModal(!showModal);
     };
 
-    const selectArchive = async()=>{
+    const handleOpenModal = (contact) => {
+        setSelectedContact(contact);
+        handleModal(true);
+    }
+
+    const selectArchive = async () => {
         const response = await DocumentPicker.pick({
             type: [DocumentPicker.types.allFiles],
         });
 
         console.log(response)//name, size, type, uri
-        RNFetchBlob.fs.readFile(response.uri, 'base64').then(data =>{
-           // console.log(data)
-            console.log('convertion sucess')
-        })
+
+        RNFetchBlob.fs.readFile(response.uri, 'base64', 4095).then(data => {
+            console.log(data)
+            //console.log('convertion sucess')
+        }).catch(error => console.log(error));
+
         handleModal(!showModal);
     }
 
     return (
         <>
-            <Modal visible={showModal}>
-                <View>
-                <TouchableOpacity onPress={()=>selectArchive()} style={{height: 500, width: '100%', backgroundColor: '#ff1599'}}>
-                    <Text>Fechar</Text>
-                </TouchableOpacity>
+            <Modal visible={showModal} transparent>
+                <View style={Styles.modal}>
+                    <View style={Styles.modalContainer}>
+                        <Text style={Styles.modalText}>
+                            Você realmente deseja excluir este contato?
+                        </Text>
+                        <View style={Styles.modalButtonContainer}>
+                            <TouchableOpacity onPress={() => handleModal(!showModal)} style={Styles.modalCloseButton}>
+                                <Text style={Styles.modalButtonText}>
+                                    Voltar
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleRemoveContact} style={Styles.modalDeleteButton}>
+                                <Text style={Styles.modalButtonText}>
+                                    Excluir
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                 </View>
             </Modal>
             <FlatList
@@ -47,7 +73,7 @@ export default ({ contacts }) => {
                                 <TouchableOpacity onPress={handleMessageContact}>
                                     <Icon style={Styles.icon} name="comment-dots" size={25} color="#000" />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => handleRemoveContact(item.id)}>
+                                <TouchableOpacity onPress={() => handleOpenModal(item)}>
                                     <Icon style={Styles.icon} name="user-minus" size={25} color="#000" />
                                 </TouchableOpacity>
                             </View>

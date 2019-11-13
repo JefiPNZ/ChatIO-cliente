@@ -3,18 +3,19 @@ import { Text, TouchableOpacity, SafeAreaView } from 'react-native';
 import UserForm from '../components/UserForm';
 import GlobalStyles from '../styles/Global';
 import ServerActions from '../Connection/ServerActions';
+// import {} from '../Connection/MessageTypes';
 
 export default ({ navigation }) => {
 
     const [user, setUser] = useState({
-        name: '',
+        nickname: '',
         password: '',
         email: '',
         birthDate: '',
     });
 
     useEffect(()=>{
-        ServerActions.writeMessage('manda o meus dados');
+        ServerActions.writeMessage('', );
         ServerActions.awaitResponse(data =>{
             const response = JSON.parse(data.toString('utf8'));
             setUser(response);

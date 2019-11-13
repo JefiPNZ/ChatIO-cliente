@@ -17,8 +17,8 @@ export default ({ setUser, user }) => {
                 <TextInput style={Styles.input}
                     autoCapitalize="none"
                     autoCorrect={false}
-                    value={user ? user.name : ''}
-                    onChangeText={text => handleChange(text, "name")}
+                    value={user ? user.nickname : ''}
+                    onChangeText={text => handleChange(text, "nickname")}
                 />
                 <Text style={Styles.label}>
                     Email

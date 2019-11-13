@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import { SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import GlobalStyles from '../styles/Global';
 import Styles from '../styles/S.NewContact';
+import ServerActions from '../Connection/ServerActions';
+import {ADD_CONTACT_MESSAGE} from '../Connection/MessageTypes';
 
 export default ({ }) => {
 
-    const [user, setUser] = useState('');
+    const [nickname, setNickname] = useState('');
 
     const handleInvite = () => {
-
+        ServerActions.writeMessage(nickname, ADD_CONTACT_MESSAGE);
+        setNickname('');
     }
 
     return (
@@ -22,10 +25,10 @@ export default ({ }) => {
                 </Text>
                 <TextInput
                     style={Styles.input}
-                    onChangeText={text => setUser(text)}
+                    onChangeText={text => setNickname(text)}
                     autoCapitalize="none"
                     autoCorrect={false}
-                    value={user}
+                    value={nickname}
                 />
             </View>
             <TouchableOpacity style={GlobalStyles.formButton} onPress={handleInvite}>
