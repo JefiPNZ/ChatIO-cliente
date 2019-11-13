@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { SafeAreaView, Text, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import UserForm from '../components/UserForm';
 import GlobalStyles from '../styles/Global';
-import ServerActions from '../Connection/ServerActions';
-import {CREATE_USER_MESSAGE} from '../Connection/MessageTypes';
+import { sendData } from '../Connection/Server';
+import { CREATE_USER_MESSAGE } from '../Connection/MessageTypes';
 
 export default ({ navigation }) => {
 
@@ -18,7 +18,9 @@ export default ({ navigation }) => {
         navigation.navigate('Login');
     };
     const handleSubmit = () => {
-        ServerActions.writeMessage(user, CREATE_USER_MESSAGE);
+        sendData(user, CREATE_USER_MESSAGE, data => {
+            console.log(data);
+        });
         navigation.navigate('Login');
         setUser({
             nickname: '',

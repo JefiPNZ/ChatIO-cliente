@@ -4,7 +4,7 @@ import Styles from '../styles/S.ContactList';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DocumentPicker from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
-import ServerActions from '../Connection/ServerActions';
+import { sendData } from '../Connection/Server';
 import { REMOVE_CONTACT_MESSAGE } from '../Connection/MessageTypes';
 
 export default ({ contacts, navigation }) => {
@@ -16,7 +16,7 @@ export default ({ contacts, navigation }) => {
     };
     const handleRemoveContact = () => {
         const { id } = selectedContact;
-        ServerActions.writeMessage(id, REMOVE_CONTACT_MESSAGE);
+        sendData(id, REMOVE_CONTACT_MESSAGE);
         handleModal(!showModal);
     };
 

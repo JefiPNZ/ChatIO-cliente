@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, TouchableOpacity, SafeAreaView } from 'react-native';
 import UserForm from '../components/UserForm';
 import GlobalStyles from '../styles/Global';
-import ServerActions from '../Connection/ServerActions';
+import { sendData } from '../Connection/Server';
 // import {} from '../Connection/MessageTypes';
 
 export default ({ navigation }) => {
@@ -15,11 +15,11 @@ export default ({ navigation }) => {
     });
 
     useEffect(()=>{
-        ServerActions.writeMessage('', );
-        ServerActions.awaitResponse(data =>{
-            const response = JSON.parse(data.toString('utf8'));
-            setUser(response);
-        });
+        sendData('', );
+        // ServerActions.awaitResponse(data =>{
+        //     const response = JSON.parse(data.toString('utf8'));
+        //     setUser(response);
+        // });
     },[]);
 
     const handleSubmit = () => {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import GlobalStyles from '../styles/Global';
 import Styles from '../styles/S.NewContact';
-import ServerActions from '../Connection/ServerActions';
+import { sendData } from '../Connection/Server';
 import {ADD_CONTACT_MESSAGE} from '../Connection/MessageTypes';
 
 export default ({ }) => {
@@ -10,7 +10,7 @@ export default ({ }) => {
     const [nickname, setNickname] = useState('');
 
     const handleInvite = () => {
-        ServerActions.writeMessage(nickname, ADD_CONTACT_MESSAGE);
+        sendData(nickname, ADD_CONTACT_MESSAGE);
         setNickname('');
     }
 

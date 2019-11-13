@@ -9,17 +9,17 @@ import Chat from './Pages/Chat';
 
 const Routes = createAppContainer(
     createDrawerNavigator({
+        Login: {
+            screen: Login,
+            navigationOptions: {
+                drawerLockMode: 'locked-closed',
+            },
+        },
         Contacts: {
             screen: Contacts,
             navigationOptions: {
                 drawerLockMode: 'unlocked',
             },
-        },
-        Login: {
-            screen: Login,
-            navigationOptions: {
-                drawerLockMode: 'locked-closed',
-            }
         },
         SignUp: {
             screen: SignUp,
