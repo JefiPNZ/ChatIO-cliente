@@ -10,12 +10,11 @@ export default ({ navigation }) => {
     const [contacts, setContacts] = useState([]);
 
     const handleSubmit = () => {
-        // ServerActions.writeMessage(login);
-        // ServerActions.awaitResponse(data =>{
-        //   console.log('message was received', JSON.parse(data.toString('utf8')));
-        // setContacts(JSON.parse(data.toString('utf8')))
-
-        // }); 
+        ServerActions.writeMessage(login);
+        ServerActions.awaitResponse(data => {
+            console.log('message was received', JSON.parse(data.toString('utf8')));
+            setContacts(JSON.parse(data.toString('utf8')))
+        });
         navigation.navigate('Contacts', {
             contacts: [
                 { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '0' },
@@ -27,6 +26,7 @@ export default ({ navigation }) => {
                 { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '6' },
             ]
         });
+
         setLogin({ name: '', password: '' });
     }
     const handleSignUp = () => {

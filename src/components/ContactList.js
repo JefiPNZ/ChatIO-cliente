@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { FlatList, Text, View, Modal, TouchableOpacity } from 'react-native';
 import Styles from '../styles/S.ContactList';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import DocumentPicker from 'react-native-document-picker';
+import RNFetchBlob from 'rn-fetch-blob';
 
 export default ({ contacts }) => {
     const [showModal, handleModal] = useState(false);
@@ -13,11 +15,24 @@ export default ({ contacts }) => {
         handleModal(!showModal);
     };
 
+    const selectArchive = async()=>{
+        const response = await DocumentPicker.pick({
+            type: [DocumentPicker.types.allFiles],
+        });
+
+        console.log(response)//name, size, type, uri
+        RNFetchBlob.fs.readFile(response.uri, 'base64').then(data =>{
+           // console.log(data)
+            console.log('convertion sucess')
+        })
+        handleModal(!showModal);
+    }
+
     return (
         <>
             <Modal visible={showModal}>
                 <View>
-                <TouchableOpacity onPress={()=>handleModal(!showModal)} style={{height: 500, width: '100%', backgroundColor: '#ff1599'}}>
+                <TouchableOpacity onPress={()=>selectArchive()} style={{height: 500, width: '100%', backgroundColor: '#ff1599'}}>
                     <Text>Fechar</Text>
                 </TouchableOpacity>
                 </View>
