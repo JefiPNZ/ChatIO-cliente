@@ -3,7 +3,6 @@ import { Text, TouchableOpacity, SafeAreaView } from 'react-native';
 import UserForm from '../components/UserForm';
 import GlobalStyles from '../styles/Global';
 import { sendData } from '../Connection/Server';
-// import {} from '../Connection/MessageTypes';
 
 export default ({ navigation }) => {
 
@@ -14,13 +13,7 @@ export default ({ navigation }) => {
         birthDate: '',
     });
 
-    useEffect(()=>{
-        sendData('', );
-        // ServerActions.awaitResponse(data =>{
-        //     const response = JSON.parse(data.toString('utf8'));
-        //     setUser(response);
-        // });
-    },[]);
+    // useEffect(()=>{},[]);
 
     const handleSubmit = () => {
         ServerActions.writeMessage('atualiza meus dados');

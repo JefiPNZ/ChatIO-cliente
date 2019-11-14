@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity, Alert } from 'react-native';
+import { CREATE_USER_MESSAGE } from '../Connection/MessageTypes';
 import UserForm from '../components/UserForm';
 import GlobalStyles from '../styles/Global';
 import { sendData } from '../Connection/Server';
-import { CREATE_USER_MESSAGE } from '../Connection/MessageTypes';
 
 export default ({ navigation }) => {
 
@@ -18,16 +18,22 @@ export default ({ navigation }) => {
         navigation.navigate('Login');
     };
     const handleSubmit = () => {
-        sendData(user, CREATE_USER_MESSAGE, data => {
-            console.log(data);
-        });
-        navigation.navigate('Login');
-        setUser({
-            nickname: '',
-            email: '',
-            password: '',
-            birthDate: '',
-        });
+        sendData(CREATE_USER_MESSAGE, user,
+            () => {
+                navigation.navigate('Login');
+                setUser({
+                    nickname: '',
+                    email: '',
+                    password: '',
+                    birthDate: '',
+                });
+            }, error => Alert.alert(
+                'Erro no cadastro',
+                error.message,
+                [
+                    { text: 'Ok' },
+                ]
+            ));
     };
     return (
         <SafeAreaView style={GlobalStyles.paddingView}>

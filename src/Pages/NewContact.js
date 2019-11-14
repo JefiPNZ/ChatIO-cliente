@@ -1,17 +1,29 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
 import GlobalStyles from '../styles/Global';
 import Styles from '../styles/S.NewContact';
 import { sendData } from '../Connection/Server';
-import {ADD_CONTACT_MESSAGE} from '../Connection/MessageTypes';
+import { ADD_CONTACT_MESSAGE } from '../Connection/MessageTypes';
 
 export default ({ }) => {
 
     const [nickname, setNickname] = useState('');
 
     const handleInvite = () => {
-        sendData(nickname, ADD_CONTACT_MESSAGE);
-        setNickname('');
+        sendData(ADD_CONTACT_MESSAGE, nickname,
+            data => {
+                // TODO tratar a adição do contato
+                setNickname('');
+            },
+            error => {
+                Alert.alert(
+                    'Erro ao adicionar o contato',
+                    error.message,
+                    [
+                        { text: 'OK' }
+                    ]
+                );
+            });
     }
 
     return (

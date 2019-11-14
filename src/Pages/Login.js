@@ -1,21 +1,29 @@
 import React, { useState } from 'react';
-import { SafeAreaView, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { SafeAreaView, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import Styles from '../styles/S.Login';
 import GlobalStyles from '../styles/Global';
-import {sendData} from '../Connection/Server';
+import { sendData } from '../Connection/Server';
 import { LOGIN_MESSAGE } from '../Connection/MessageTypes';
 
 export default ({ navigation }) => {
- 
+
     const [login, setLogin] = useState({ name: '', password: '' });
 
     const handleSubmit = () => {
-        sendData(login, LOGIN_MESSAGE, data =>{
-            console.log(data);
-        });
-        navigation.navigate('Contacts');
-
-        setLogin({ name: '', password: '' });
+        sendData(LOGIN_MESSAGE, login,
+            () => {
+                navigation.navigate('Contacts');
+                setLogin({ name: '', password: '' });
+            },
+            error => {
+                Alert.alert(
+                    'Erro no login',
+                    error.message,
+                    [
+                        {text: 'OK'}
+                    ]
+                );
+            });
     }
     const handleSignUp = () => {
         navigation.navigate('SignUp');

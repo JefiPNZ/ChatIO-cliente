@@ -46,6 +46,7 @@ export default ({ setUser, user }) => {
                     autoCorrect={false}
                     value={user ? user.birthDate : ''}
                     onChangeText={text => handleChange(text, "birthDate")}
+                    keyboardType="numeric"  
                 />
             </View>
         </SafeAreaView>

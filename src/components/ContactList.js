@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, Text, View, Modal, TouchableOpacity } from 'react-native';
+import { FlatList, Text, View, Modal, TouchableOpacity, Alert } from 'react-native';
 import Styles from '../styles/S.ContactList';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DocumentPicker from 'react-native-document-picker';
@@ -16,7 +16,19 @@ export default ({ contacts, navigation }) => {
     };
     const handleRemoveContact = () => {
         const { id } = selectedContact;
-        sendData(id, REMOVE_CONTACT_MESSAGE);
+        sendData(REMOVE_CONTACT_MESSAGE, id,
+            data => {
+                // TODO  
+            },
+            error => {
+                Alert.alert(
+                    'Erro ao deletar o contato',
+                    error.message,
+                    [
+                        { text: 'Ok' }
+                    ]
+                );
+            });
         handleModal(!showModal);
     };
 
