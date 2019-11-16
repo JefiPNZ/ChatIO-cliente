@@ -1,11 +1,18 @@
 import TcpSocket from 'react-native-tcp-socket';
-import { SUCCESS_MESSAGE, ERROR_MESSAGE, DATA_MESSAGE } from './MessageTypes';
+import BackgroundTimer from 'react-native-background-timer';
+import { SUCCESS_MESSAGE, ERROR_MESSAGE, DATA_MESSAGE, CONNECTED_STATUS_MESSAGE } from './MessageTypes';
 
 const Server = TcpSocket.createConnection({
-  host: '192.168.2.151',
+  host: '192.168.0.100',
+  //  host: '192.168.2.151',
   port: 56000,
   interface: 'wifi',
 });
+
+BackgroundTimer.runBackgroundTimer(() => {
+  sendData(CONNECTED_STATUS_MESSAGE, '', null, error => console.log('erro: ',error));
+},
+  5000);
 
 export const sendData = async (messageType = '', message, onSuccess, onError) => {
 
@@ -18,12 +25,12 @@ export const sendData = async (messageType = '', message, onSuccess, onError) =>
   await Server.on('data', data => {
     const message = data.toString('utf8').match("([A-Z]+>?)(.*)");
     const status = message[1];
-    const messageContent = JSON.parse(message[2]);
+    const messageContent = message[2].trim().length > 0 ? JSON.parse(message[2]) : '';
 
     if (onError && status === ERROR_MESSAGE) {
-      onError(messageContent)
+      return onError(messageContent)
     } else if (onSuccess && (status === SUCCESS_MESSAGE || status === DATA_MESSAGE)) {
-      onSuccess(messageContent);
+      return onSuccess(messageContent);
     }
   });
 }

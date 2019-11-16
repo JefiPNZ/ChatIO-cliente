@@ -7,13 +7,13 @@ import { LOGIN_MESSAGE } from '../Connection/MessageTypes';
 
 export default ({ navigation }) => {
 
-    const [login, setLogin] = useState({ name: '', password: '' });
+    const [login, setLogin] = useState({ nickname: '', password: '' });
 
     const handleSubmit = () => {
         sendData(LOGIN_MESSAGE, login,
             () => {
                 navigation.navigate('Contacts');
-                setLogin({ name: '', password: '' });
+                setLogin({ nickname: '', password: '' });
             },
             error => {
                 Alert.alert(
@@ -49,8 +49,8 @@ export default ({ navigation }) => {
                 <TextInput style={Styles.input}
                     autoCapitalize="none"
                     autoCorrect={false}
-                    value={login.name}
-                    onChangeText={text => handleChange(text, 'name')}
+                    value={login.nickname}
+                    onChangeText={text => handleChange(text, 'nickname')}
                 />
                 <Text style={Styles.label}>
                     Senha

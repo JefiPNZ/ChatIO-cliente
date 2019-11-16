@@ -11,8 +11,8 @@ export default ({ contacts, navigation }) => {
     const [showModal, handleModal] = useState(false);
     const [selectedContact, setSelectedContact] = useState({});
 
-    const handleMessageContact = () => {
-        navigation.navigate('Chat');
+    const handleMessageContact = (contact) => {
+        navigation.navigate('Chat', {contact});
     };
     const handleRemoveContact = () => {
         const { id } = selectedContact;
@@ -82,7 +82,7 @@ export default ({ contacts, navigation }) => {
                     return (
                         <View style={Styles.container} key={item.id}>
                             <View style={Styles.iconContainer}>
-                                <TouchableOpacity onPress={handleMessageContact}>
+                                <TouchableOpacity onPress={()=> handleMessageContact(item)}>
                                     <Icon style={Styles.icon} name="comment-dots" size={25} color="#000" />
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => handleOpenModal(item)}>
@@ -90,7 +90,7 @@ export default ({ contacts, navigation }) => {
                                 </TouchableOpacity>
                             </View>
                             <View style={Styles.textContainer}>
-                                <Text style={Styles.contactName}>{item.name}</Text>
+                                <Text style={Styles.contactName}>{item.nickname}</Text>
                                 <Text style={Styles.contactDescription}>{item.email}</Text>
                                 <Text style={Styles.contactDescription}>{item.birthDate}</Text>
                             </View>

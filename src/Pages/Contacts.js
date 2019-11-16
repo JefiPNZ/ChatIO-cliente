@@ -8,6 +8,7 @@ import { GET_CONTACT_LIST_MESSAGE } from '../Connection/MessageTypes';
 export default ({ navigation }) => {
 
     const [contacts, setContacts] = useState([]);
+
     useEffect(() => {
         sendData(GET_CONTACT_LIST_MESSAGE, '',
         data => {
@@ -20,17 +21,11 @@ export default ({ navigation }) => {
                 [
                     {text: 'OK'}
                 ]
-            )
+            )  
         });
         /*
         setContacts([
-            { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '0' },
-            { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '1' },
-            { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '2' },
-            { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '3' },
-            { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '4' },
-            { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '5' },
-            { name: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '6' },
+            { nickname: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '1', ip: '192.168.2.151'},//192.168.2.136
         ]);
         */
     }, []);
