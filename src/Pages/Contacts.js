@@ -24,17 +24,6 @@ export default ({ navigation }) => {
                 ]
             )  
         });
-        /*
-        setContacts([
-            { nickname: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '1', ip: '192.168.2.151'},//192.168.2.136
-            { nickname: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '1', ip: '192.168.2.151'},//192.168.2.136
-            { nickname: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '1', ip: '192.168.2.151'},//192.168.2.136
-            { nickname: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '1', ip: '192.168.2.151'},//192.168.2.136
-            { nickname: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '1', ip: '192.168.2.151'},//192.168.2.136
-            { nickname: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '1', ip: '192.168.2.151'},//192.168.2.136
-            { nickname: 'Daiarino da Silva', email: 'email@email.com', birthDate: '1998', id: '1', ip: '192.168.2.151'},//192.168.2.136
-        ]);
-        */
     }
     useEffect(refreshContacts, []);
 

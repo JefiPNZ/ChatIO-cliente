@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { FlatList, Text, View, Modal, TouchableOpacity, Alert, RefreshControl } from 'react-native';
 import Styles from '../styles/S.ContactList';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import AwesomeIcon5 from 'react-native-vector-icons/FontAwesome5';
+import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import DocumentPicker from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import { sendData } from '../Connection/Server';
@@ -13,12 +14,12 @@ export default ({ contacts, navigation, refreshContacts }) => {
     const [selectedContact, setSelectedContact] = useState({});
 
     const handleMessageContact = (contact, ip) => {
-        navigation.navigate('Chat', { contact, ip});
+        navigation.navigate('Chat', { contact, ip });
     };
     const handleRemoveContact = () => {
-        const { id } = selectedContact;
-        sendData(REMOVE_CONTACT_MESSAGE, id,
-            () => {
+        const { nickname } = selectedContact;
+        sendData(REMOVE_CONTACT_MESSAGE, { nickname },
+            data => {
                 Alert.alert(
                     'Usuário removido com sucesso',
                     [
@@ -91,23 +92,27 @@ export default ({ contacts, navigation, refreshContacts }) => {
                     />
                 }
                 data={contacts}
-                renderItem={contact => {
-                    const { user, ip, online } = contact.item;
-                    console.log(user)
+                renderItem={contacts => {
+                    const { contact, ip, online } = contacts.item;
+                    console.log(contact)
                     return (
-                        <View style={Styles.container} key={user.id}>
+                        <View style={Styles.container} key={contact.id}>
                             <View style={Styles.iconContainer}>
-                                <TouchableOpacity onPress={() => handleMessageContact(user, ip)}>
-                                    <Icon style={Styles.icon} name="comment-dots" size={25} color={online ? '#00D617' : '#D60000'} />
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => handleOpenModal(user)}>
-                                    <Icon style={Styles.icon} name="user-minus" size={25} color="#000" />
+                                {online ? (
+                                    <TouchableOpacity onPress={() => handleMessageContact(contact, ip)}>
+                                        <AwesomeIcon5 style={Styles.icon} name="comment-dots" size={25} color="#000" />
+                                    </TouchableOpacity>
+                                ) : (
+                                        <AwesomeIcon name="close" style={Styles.icon} size={25} color="#000" />
+                                    )}
+                                <TouchableOpacity onPress={() => handleOpenModal(contact)}>
+                                    <AwesomeIcon5 style={Styles.icon} name="user-minus" size={25} color="#000" />
                                 </TouchableOpacity>
                             </View>
                             <View style={Styles.textContainer}>
-                                <Text style={Styles.contactName}>{user.nickname}</Text>
-                                <Text style={Styles.contactDescription}>{user.email}</Text>
-                                <Text style={Styles.contactDescription}>{user.birthDate}</Text>
+                                <Text style={Styles.contactName}>{contact.nickname}</Text>
+                                <Text style={Styles.contactDescription}>{contact.email}</Text>
+                                <Text style={Styles.contactDescription}>{contact.birthDate}</Text>
                             </View>
                         </View>
                     )
