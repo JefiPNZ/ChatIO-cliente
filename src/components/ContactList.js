@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, Text, View, Modal, TouchableOpacity, Alert } from 'react-native';
+import { FlatList, Text, View, Modal, TouchableOpacity, Alert, RefreshControl } from 'react-native';
 import Styles from '../styles/S.ContactList';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DocumentPicker from 'react-native-document-picker';
@@ -7,18 +7,24 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { sendData } from '../Connection/Server';
 import { REMOVE_CONTACT_MESSAGE } from '../Connection/MessageTypes';
 
-export default ({ contacts, navigation }) => {
+export default ({ contacts, navigation, refreshContacts }) => {
     const [showModal, handleModal] = useState(false);
+    const [refresh, setRefreshing] = useState(false);
     const [selectedContact, setSelectedContact] = useState({});
 
-    const handleMessageContact = (contact) => {
-        navigation.navigate('Chat', {contact});
+    const handleMessageContact = (contact, ip) => {
+        navigation.navigate('Chat', { contact, ip});
     };
     const handleRemoveContact = () => {
         const { id } = selectedContact;
         sendData(REMOVE_CONTACT_MESSAGE, id,
-            data => {
-                // TODO  
+            () => {
+                Alert.alert(
+                    'Usuário removido com sucesso',
+                    [
+                        { text: 'Ok' }
+                    ]
+                );
             },
             error => {
                 Alert.alert(
@@ -76,27 +82,37 @@ export default ({ contacts, navigation }) => {
                 </View>
             </Modal>
             <FlatList
+                refreshControl={
+                    <RefreshControl refreshing={refresh} onRefresh={() => {
+                        setRefreshing(true);
+                        refreshContacts();
+                        setRefreshing(false)
+                    }}
+                    />
+                }
                 data={contacts}
                 renderItem={contact => {
-                    const { item } = contact;
+                    const { user, ip, online } = contact.item;
+                    console.log(user)
                     return (
-                        <View style={Styles.container} key={item.id}>
+                        <View style={Styles.container} key={user.id}>
                             <View style={Styles.iconContainer}>
-                                <TouchableOpacity onPress={()=> handleMessageContact(item)}>
-                                    <Icon style={Styles.icon} name="comment-dots" size={25} color="#000" />
+                                <TouchableOpacity onPress={() => handleMessageContact(user, ip)}>
+                                    <Icon style={Styles.icon} name="comment-dots" size={25} color={online ? '#00D617' : '#D60000'} />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => handleOpenModal(item)}>
+                                <TouchableOpacity onPress={() => handleOpenModal(user)}>
                                     <Icon style={Styles.icon} name="user-minus" size={25} color="#000" />
                                 </TouchableOpacity>
                             </View>
                             <View style={Styles.textContainer}>
-                                <Text style={Styles.contactName}>{item.nickname}</Text>
-                                <Text style={Styles.contactDescription}>{item.email}</Text>
-                                <Text style={Styles.contactDescription}>{item.birthDate}</Text>
+                                <Text style={Styles.contactName}>{user.nickname}</Text>
+                                <Text style={Styles.contactDescription}>{user.email}</Text>
+                                <Text style={Styles.contactDescription}>{user.birthDate}</Text>
                             </View>
                         </View>
                     )
-                }} />
+                }}
+            />
         </>
     );
 };

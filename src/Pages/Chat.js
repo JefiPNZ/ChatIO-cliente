@@ -6,9 +6,12 @@ export default ({ navigation }) => {
 
     const [ContactConnection, setContactConn] = useState(null);
     const contact = navigation.getParam('contact', {});
+    const ip = navigation.getParam('ip', '');
+    console.log(contact, ip);
     const port = 56001;
     const id = 1;
     const myIp = '192.168.2.151';
+    // 192.168.0.10238559
 
     const [messages, setMessages] = useState([
         {
@@ -24,7 +27,7 @@ export default ({ navigation }) => {
     ]);
 
     useEffect(() => {
-        // OpenServer(myIp,message => {});
+        OpenServer(myIp, message => { });
     }, []);
 
     const handleMessage = data => {

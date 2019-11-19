@@ -4,8 +4,7 @@ import { SUCCESS_MESSAGE, ERROR_MESSAGE, DATA_MESSAGE, CONNECTED_STATUS_MESSAGE 
 
 let dataFunction;
 const Server = TcpSocket.createConnection({
-  host: '192.168.0.101',
-  //  host: '192.168.2.151',
+  host: '192.168.2.151',
   port: 56000,
   interface: 'wifi',
 });
@@ -25,6 +24,7 @@ export const sendData = async (messageType = '', message, onSuccess, onError) =>
   dataFunction = response => {
     const message = response.match("([A-Z]+>?)(.*)");
     const status = message[1];
+    console.log(message[2])
     const messageContent = message[2].trim().length > 0 ? JSON.parse(message[2]) : '';
 
     if (onError && status === ERROR_MESSAGE) {

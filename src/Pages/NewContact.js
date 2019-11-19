@@ -10,12 +10,13 @@ export default ({ }) => {
     const [nickname, setNickname] = useState('');
 
     const handleInvite = () => {
-        sendData(ADD_CONTACT_MESSAGE, nickname,
+        sendData(ADD_CONTACT_MESSAGE, {nickname},
             data => {
-                // TODO tratar a adição do contato
+                Alert.alert('Contato adicionado!');
                 setNickname('');
             },
             error => {
+                console.log(error);
                 Alert.alert(
                     'Erro ao adicionar o contato',
                     error.message,

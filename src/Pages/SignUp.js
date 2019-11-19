@@ -28,7 +28,7 @@ export default ({ navigation }) => {
                     birthDate: '',
                 });
             }, error => Alert.alert(
-                'Erro no cadastro, não era para eu aparecer aqui',
+                'Erro no cadastro',
                 error.message,
                 [
                     { text: 'Ok' },

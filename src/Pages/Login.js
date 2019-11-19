@@ -12,15 +12,15 @@ export default ({ navigation }) => {
     const handleSubmit = () => {
         sendData(LOGIN_MESSAGE, login,
             () => {
-                navigation.navigate('Contacts');
                 setLogin({ nickname: '', password: '' });
+                navigation.navigate('Contacts');
             },
             error => {
                 Alert.alert(
                     'Erro no login',
                     error.message,
                     [
-                        {text: 'OK'}
+                        { text: 'OK' }
                     ]
                 );
             });
