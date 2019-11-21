@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, SafeAreaView, Alert } from 'react-native';
 import UserForm from '../components/UserForm';
 import GlobalStyles from '../styles/Global';
 import { sendData } from '../Connection/Server';
-import { ALTER_USER_MESSAGE } from '../Connection/MessageTypes';
+import { ALTER_USER_MESSAGE, GET_USER_DATA } from '../Connection/MessageTypes';
 
 export default ({ navigation }) => {
 
@@ -15,13 +15,9 @@ export default ({ navigation }) => {
     });
 
     useEffect(() => {
-        sendData(ALTER_USER_MESSAGE, user,
-            () => {
-                Alert.alert(
-                    'Sucesso',
-                    'Os seus dados foram alterados com sucesso',
-                    [{ text: 'Ok' }]
-                );
+        sendData(GET_USER_DATA, '',
+            data => {
+                setUser({ ...data })
             },
             error => {
                 Alert.alert(
@@ -33,32 +29,28 @@ export default ({ navigation }) => {
     }, []);
 
     const handleSubmit = () => {
-        ServerActions.writeMessage('atualiza meus dados');
-        ServerActions.awaitResponse(data => {
-            sendData(ALTER_USER_MESSAGE, user,
-                () => {
-                    Alert.alert(
-                        'Sucesso',
-                        'Os seus dados foram alterados com sucesso',
-                        [{ text: 'Ok' }]
-                    );
-                    setUser({
-                        nickname: '',
-                        password: '',
-                        email: '',
-                        birthDate: '',
-                    });
-                },
-                error => {
-                    Alert.alert(
-                        'Erro',
-                        error.message,
-                        [{ text: 'OK' }]
-                    );
+        sendData(ALTER_USER_MESSAGE, user,
+            () => {
+                Alert.alert(
+                    'Sucesso',
+                    'Os seus dados foram alterados com sucesso',
+                    [{ text: 'Ok' }]
+                );
+                setUser({
+                    nickname: '',
+                    password: '',
+                    email: '',
+                    birthDate: '',
                 });
-        });
+            },
+            error => {
+                Alert.alert(
+                    'Erro',
+                    error.message,
+                    [{ text: 'OK' }]
+                );
+            });
     };
-
     return (
         <SafeAreaView style={GlobalStyles.paddingView}>
             <Text style={GlobalStyles.header}>

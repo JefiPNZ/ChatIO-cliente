@@ -4,8 +4,8 @@ import { SUCCESS_MESSAGE, ERROR_MESSAGE, DATA_MESSAGE, CONNECTED_STATUS_MESSAGE 
 
 let dataFunction;
 const Server = TcpSocket.createConnection({
-  host: '10.15.32.198',
- // host: '192.168.2.151',
+ // host: '10.15.32.198',
+  host: '192.168.2.151',
   port: 56000,
   interface: 'wifi',
 });
