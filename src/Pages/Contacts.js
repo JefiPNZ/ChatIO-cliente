@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Text, SafeAreaView, Alert } from 'react-native';
+import { Text, SafeAreaView, Alert, Modal, View } from 'react-native';
 import ContactList from '../components/ContactList';
 import GlobalStyles from '../styles/Global'
 import { sendData } from '../Connection/Server';
 import { GET_CONTACT_LIST_MESSAGE } from '../Connection/MessageTypes';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Styles from '../styles/S.ContactsPage';
 
 export default ({ navigation }) => {
 
     const [showModal, handleModal] = useState(false);
     const [contacts, setContacts] = useState([]);
     const [selectedContact, setSelectedContact] = useState({});
-    
+
     const refreshContacts = () => {
         sendData(GET_CONTACT_LIST_MESSAGE, '',
             data => {
@@ -26,7 +28,6 @@ export default ({ navigation }) => {
                     ]
                 )
             });
-
     }
     const handleRemoveContact = () => {
         const { nickname } = selectedContact;
@@ -83,7 +84,18 @@ export default ({ navigation }) => {
             </Modal>
             <SafeAreaView style={GlobalStyles.paddingView}>
                 <Text style={GlobalStyles.header}>Lista de contatos</Text>
-                <ContactList contacts={contacts} navigation={navigation} refreshContacts={refreshContacts} handleOpenModal={handleOpenModal}/>
+                {contacts.length === 0 ? (
+                    <>
+                        <Text style={Styles.emptyContactsMessage}>Parece que você não possuí nenhum contato</Text>
+                        <TouchableOpacity style={Styles.emptyContactsButton} onPress={refreshContacts}>
+                            <Text style={Styles.emptyContactsButtonText}>Clique aqui para atualizar</Text>
+                        </TouchableOpacity>
+                    </>
+                ) : (
+                        <>
+                            <ContactList contacts={contacts} navigation={navigation} refreshContacts={refreshContacts} handleOpenModal={handleOpenModal} />
+                        </>
+                )}
             </SafeAreaView>
         </>
     );

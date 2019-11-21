@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { FlatList, Text, View, Modal, TouchableOpacity, Alert, RefreshControl } from 'react-native';
+import { FlatList, Text, View, TouchableOpacity, RefreshControl } from 'react-native';
 import Styles from '../styles/S.ContactList';
 import AwesomeIcon5 from 'react-native-vector-icons/FontAwesome5';
-import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
+// import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 // import DocumentPicker from 'react-native-document-picker';
 // import RNFetchBlob from 'rn-fetch-blob';
 
@@ -27,6 +27,7 @@ export default ({ contacts, navigation, refreshContacts, handleOpenModal }) => {
     
             handleModal(!showModal);
         }
+        <AwesomeIcon name="close" style={Styles.icon} size={35} color="#000" />
     */
     return (
         <>
@@ -51,8 +52,8 @@ export default ({ contacts, navigation, refreshContacts, handleOpenModal }) => {
                                         <AwesomeIcon5 style={Styles.icon} name="comment-dots" size={25} color="#000" />
                                     </TouchableOpacity>
                                 ) : (
-                                        <AwesomeIcon name="close" style={Styles.icon} size={35} color="#000" />
-                                    )}
+                                    null
+                                )}
                                 <TouchableOpacity onPress={() => handleOpenModal(contact)}>
                                     <AwesomeIcon5 style={Styles.icon} name="user-minus" size={25} color="#000" />
                                 </TouchableOpacity>

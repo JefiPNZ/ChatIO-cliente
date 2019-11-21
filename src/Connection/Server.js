@@ -4,7 +4,8 @@ import { SUCCESS_MESSAGE, ERROR_MESSAGE, DATA_MESSAGE, CONNECTED_STATUS_MESSAGE 
 
 let dataFunction;
 const Server = TcpSocket.createConnection({
-  host: '192.168.2.151',
+  host: '10.15.32.198',
+ // host: '192.168.2.151',
   port: 56000,
   interface: 'wifi',
 });
@@ -17,7 +18,7 @@ if (!dataFunction) {
 BackgroundTimer.runBackgroundTimer(() => {
   sendData(CONNECTED_STATUS_MESSAGE, '', null, error => console.log('erro: ', error));
 },
-  5000);
+  8000);
 
 export const sendData = async (messageType = '', message, onSuccess, onError) => {
 
