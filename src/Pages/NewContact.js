@@ -11,7 +11,7 @@ export default ({ }) => {
 
     const handleInvite = () => {
         sendData(ADD_CONTACT_MESSAGE, {nickname},
-            data => {
+            () => {
                 Alert.alert('Contato adicionado!');
                 setNickname('');
             },

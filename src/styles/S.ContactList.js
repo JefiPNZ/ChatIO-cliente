@@ -67,6 +67,5 @@ export default StyleSheet.create({
     modalButtonText: {
         fontSize: 25,
         alignSelf: 'center',
-        fontWeight: 'bold',
     }
 });

@@ -3,85 +3,33 @@ import { FlatList, Text, View, Modal, TouchableOpacity, Alert, RefreshControl } 
 import Styles from '../styles/S.ContactList';
 import AwesomeIcon5 from 'react-native-vector-icons/FontAwesome5';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import DocumentPicker from 'react-native-document-picker';
-import RNFetchBlob from 'rn-fetch-blob';
-import { sendData } from '../Connection/Server';
-import { REMOVE_CONTACT_MESSAGE } from '../Connection/MessageTypes';
+// import DocumentPicker from 'react-native-document-picker';
+// import RNFetchBlob from 'rn-fetch-blob';
 
-export default ({ contacts, navigation, refreshContacts }) => {
-    const [showModal, handleModal] = useState(false);
+export default ({ contacts, navigation, refreshContacts, handleOpenModal }) => {
     const [refresh, setRefreshing] = useState(false);
-    const [selectedContact, setSelectedContact] = useState({});
 
     const handleMessageContact = (contact, ip) => {
         navigation.navigate('Chat', { contact, ip });
     };
-    const handleRemoveContact = () => {
-        const { nickname } = selectedContact;
-        sendData(REMOVE_CONTACT_MESSAGE, { nickname },
-            data => {
-                Alert.alert(
-                    'Usuário removido com sucesso',
-                    [
-                        { text: 'Ok' }
-                    ]
-                );
-            },
-            error => {
-                Alert.alert(
-                    'Erro ao deletar o contato',
-                    error.message,
-                    [
-                        { text: 'Ok' }
-                    ]
-                );
+    /*
+        const selectArchive = async () => {
+            const response = await DocumentPicker.pick({
+                type: [DocumentPicker.types.allFiles],
             });
-        handleModal(!showModal);
-    };
-
-    const handleOpenModal = (contact) => {
-        setSelectedContact(contact);
-        handleModal(true);
-    }
-
-    const selectArchive = async () => {
-        const response = await DocumentPicker.pick({
-            type: [DocumentPicker.types.allFiles],
-        });
-
-        console.log(response)//name, size, type, uri
-
-        RNFetchBlob.fs.readFile(response.uri, 'base64', 4095).then(data => {
-            console.log(data)
-            //console.log('convertion sucess')
-        }).catch(error => console.log(error));
-
-        handleModal(!showModal);
-    }
-
+    
+            console.log(response)//name, size, type, uri
+    
+            RNFetchBlob.fs.readFile(response.uri, 'base64', 4095).then(data => {
+                console.log(data)
+                //console.log('convertion sucess')
+            }).catch(error => console.log(error));
+    
+            handleModal(!showModal);
+        }
+    */
     return (
         <>
-            <Modal visible={showModal} transparent>
-                <View style={Styles.modal}>
-                    <View style={Styles.modalContainer}>
-                        <Text style={Styles.modalText}>
-                            Você realmente deseja excluir este contato?
-                        </Text>
-                        <View style={Styles.modalButtonContainer}>
-                            <TouchableOpacity onPress={() => handleModal(!showModal)} style={Styles.modalCloseButton}>
-                                <Text style={Styles.modalButtonText}>
-                                    Voltar
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={handleRemoveContact} style={Styles.modalDeleteButton}>
-                                <Text style={Styles.modalButtonText}>
-                                    Excluir
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
             <FlatList
                 refreshControl={
                     <RefreshControl refreshing={refresh} onRefresh={() => {
@@ -103,7 +51,7 @@ export default ({ contacts, navigation, refreshContacts }) => {
                                         <AwesomeIcon5 style={Styles.icon} name="comment-dots" size={25} color="#000" />
                                     </TouchableOpacity>
                                 ) : (
-                                        <AwesomeIcon name="close" style={Styles.icon} size={25} color="#000" />
+                                        <AwesomeIcon name="close" style={Styles.icon} size={35} color="#000" />
                                     )}
                                 <TouchableOpacity onPress={() => handleOpenModal(contact)}>
                                     <AwesomeIcon5 style={Styles.icon} name="user-minus" size={25} color="#000" />
