@@ -20,6 +20,11 @@ BackgroundTimer.runBackgroundTimer(() => {
 },
   8000);
 
+export const closeConnection = ()=>{
+  Server.destroy();
+}
+
+
 export const sendData = async (messageType = '', message, onSuccess, onError) => {
 
   dataFunction = response => {

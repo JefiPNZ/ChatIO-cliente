@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import Styles from '../styles/S.Login';
 import GlobalStyles from '../styles/Global';
 import { sendData } from '../Connection/Server';
-import { LOGIN_MESSAGE } from '../Connection/MessageTypes';
+import { LOGIN_MESSAGE, LOGOUT_MESSAGE } from '../Connection/MessageTypes';
 
 export default ({ navigation }) => {
 
     const [login, setLogin] = useState({ nickname: '', password: '' });
-
+/*
+    useEffect(()=>{
+        sendData(LOGOUT_MESSAGE, '', null, error => console.log(error));
+    },[]);
+*/
     const handleSubmit = () => {
         sendData(LOGIN_MESSAGE, login,
             () => {

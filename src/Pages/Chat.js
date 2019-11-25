@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { Alert } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { Connect, SendMessage, OpenServer, Close } from '../Connection/ClientConnection';
 
 export default ({ navigation }) => {
 
-    const [ContactConnection, setContactConn] = useState(null);
     const contact = navigation.getParam('contact', {});
     const ip = navigation.getParam('ip', '');
-    console.log(contact, ip);
+    // console.log('contato', contact,'ip', ip.substr(0,13));
     const port = 56001;
     const id = 1;
     const myIp = '192.168.2.151';
@@ -27,15 +27,19 @@ export default ({ navigation }) => {
     ]);
 
     useEffect(() => {
-        OpenServer(myIp, message => { });
+        OpenServer(myIp, message => {
+            const newMessage = GiftedChat.append(messages, message);
+            setMessages([])
+            setMessages([...newMessage]);
+        });
     }, []);
 
     const handleMessage = data => {
-        Connect(contact.ip);
+        Connect(ip.substr(0, 13));
         const newMessage = GiftedChat.append(messages, data);
         setMessages([...newMessage]);
         const lastMessage = newMessage[0];
-        console.log(messages)
+        console.log('mensagem enviada para ', ip.substr(0, 13))
         SendMessage(JSON.stringify({
             ...lastMessage,
             _id: Math.floor(Math.random(100000)),
@@ -43,11 +47,9 @@ export default ({ navigation }) => {
                 _id: 2,
             }
         }),
-            message => {
-                setMessages(GiftedChat.append(messages, message));
-            },
             error => {
                 console.log('erro', error)
+                Alert.alert('Erro no envio, verifique sua conexão');
             });
         Close();
     };

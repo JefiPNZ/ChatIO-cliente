@@ -16,7 +16,6 @@ export default ({ navigation }) => {
     const refreshContacts = () => {
         sendData(GET_CONTACT_LIST_MESSAGE, '',
             data => {
-                console.log('data', data);
                 setContacts(data);
             },
             error => {

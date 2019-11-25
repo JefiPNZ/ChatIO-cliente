@@ -5,6 +5,7 @@ let ClientConn;
 let Server;
 
 export const Connect = host => {
+    console.log('conectando em:',host);
     ClientConn = TcpSocket.connect({ host, port: CHAT_PORT });
 }
 
@@ -29,19 +30,12 @@ export const OpenServer = (host, onMessageReceived) => {
     }).listen(CHAT_PORT, host);
 };
 
-export const SendMessage = async (message, onSuccess, onError) => {
+export const SendMessage = async (message, onError) => {
     if (typeof message !== 'string') {
         await ClientConn.write(JSON.stringify(message) + "\n");
     } else {
         await ClientConn.write(message + "\n");
     }
-    await ClientConn.on('data', data => {
-        const message = data.toString('utf8');
-        if (onSuccess) {
-            console.log(message);
-            onSuccess(JSON.parse(message));
-        }
-    });
 
     ClientConn.on('error', error => onError ? onError(error) : null);
 }
