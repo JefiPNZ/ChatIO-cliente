@@ -5,17 +5,20 @@ let ClientConn;
 let Server;
 let clientHost;
 
-export const Connect = host => {
-    if (!ClientConn) {
-        clientHost = host;
-        ClientConn = TcpSocket.connect({ host, port: CHAT_PORT });
+export const Connect = () => {
+    if (!ClientConn && clientHost) {
+        ClientConn = TcpSocket.connect({ host: clientHost, port: CHAT_PORT });
         ClientConn.on('error', error => console.log(error));
     }
 }
 
+export const setClientIp = ip =>{
+    clientHost = ip;
+}
+
 export const Close = () => {
-   // ClientConn.destroy();
-   //  ClientConn = null;
+   ClientConn.destroy();
+   ClientConn = null;
 } 
 
 export const OpenServer = (onMessageReceived) => {
@@ -46,11 +49,12 @@ export const OpenServer = (onMessageReceived) => {
 
 export const SendMessage = async (message, onError) => {
     if(!ClientConn){
-        Connect(clientHost);
+        Connect();
     }
     if (typeof message !== 'string') {
         await ClientConn.write(JSON.stringify(message) + "\n");
     } else {
         await ClientConn.write(message + "\n");
     }
+    Close();
 }

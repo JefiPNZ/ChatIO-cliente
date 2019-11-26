@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
-import { Connect, SendMessage, OpenServer, Close } from '../Connection/ClientConnection';
+import { Connect, SendMessage, OpenServer, setClientIp } from '../Connection/ClientConnection';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AwesomeIcon5 from 'react-native-vector-icons/FontAwesome5';
 import Global from '../styles/Global';
@@ -38,7 +38,7 @@ export default ({ navigation }) => {
         console.log('IP',ip)
         const operator = ip.indexOf(':');
         console.log('ip formatado', ip.substr(0,operator))
-        Connect(ip.substr(0, operator));
+        setClientIp(ip.substr(0, operator));
         const newMessage = GiftedChat.append(messages, message);
         setMessages([...newMessage]);
         const lastMessage = newMessage[0];
@@ -54,7 +54,6 @@ export default ({ navigation }) => {
                 console.log('erro', error)
                 Alert.alert('Erro no envio, verifique sua conexão');
             });
-        Close();
     };
 
     return (
