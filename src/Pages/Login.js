@@ -96,6 +96,7 @@ export default ({ navigation }) => {
                         autoCorrect={false}
                         value={login.password}
                         onChangeText={text => handleChange(text, 'password')}
+                        secureTextEntry={true}
                     />
                 </View>
                 <View style={Styles.buttonContainer}>

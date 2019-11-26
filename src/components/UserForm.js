@@ -2,7 +2,7 @@ import React from 'react';
 import { SafeAreaView, Text, TextInput, View } from 'react-native';
 import Styles from '../styles/S.UserForm';
 
-export default ({ setUser, user }) => {
+export default ({ setUser, user, edit }) => {
 
     const handleChange = (text, name) => {
         const aux = { ...user };
@@ -29,15 +29,19 @@ export default ({ setUser, user }) => {
                     value={user ? user.email : ''}
                     onChangeText={text => handleChange(text, "email")}
                 />
-                <Text style={Styles.label}>
-                    Senha
-                </Text>
+                {edit ?
+                    <Text style={Styles.label}>Confirme sua senha</Text>
+                    :
+                    <Text style={Styles.label}>Senha</Text>
+                }
                 <TextInput style={Styles.input}
                     autoCapitalize="none"
                     autoCorrect={false}
                     value={user ? user.password : ''}
                     onChangeText={text => handleChange(text, "password")}
+                    secureTextEntry={true}
                 />
+
                 <Text style={Styles.label}>
                     Ano de Nascimento
                 </Text>
@@ -46,7 +50,7 @@ export default ({ setUser, user }) => {
                     autoCorrect={false}
                     value={user ? user.birthDate : ''}
                     onChangeText={text => handleChange(text, "birthDate")}
-                    keyboardType="numeric"  
+                    keyboardType="numeric"
                 />
             </View>
         </SafeAreaView>

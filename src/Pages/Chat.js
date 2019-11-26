@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { Connect, SendMessage, OpenServer, Close } from '../Connection/ClientConnection';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import AwesomeIcon5 from 'react-native-vector-icons/FontAwesome5';
 
 export default ({ navigation }) => {
 
@@ -51,6 +53,11 @@ export default ({ navigation }) => {
     };
 
     return (
-        <GiftedChat messages={messages} user={{ _id: id }} onSend={message => handleMessage(message)} />
+        <>
+            <TouchableOpacity style={{ alignSelf: 'center', marginTop:20 }} onPress={() => navigation.navigate('Contacts')}>
+                <AwesomeIcon5 name="arrow-left" size={35} color="#ff5900" />
+            </TouchableOpacity>
+            <GiftedChat messages={messages} user={{ _id: id }} onSend={message => handleMessage(message)} />
+        </>
     );
 };

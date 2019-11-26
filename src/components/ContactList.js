@@ -43,7 +43,6 @@ export default ({ contacts, navigation, refreshContacts, handleOpenModal }) => {
                 data={contacts}
                 renderItem={contacts => {
                     const { contact, ip, online } = contacts.item;
-                    console.log(contact)
                     return (
                         <View style={Styles.container} key={contact.id}>
                             <View style={Styles.iconContainer}>

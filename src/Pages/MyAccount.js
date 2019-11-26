@@ -17,7 +17,7 @@ export default ({ navigation }) => {
     useEffect(() => {
         sendData(GET_USER_DATA, '',
             data => {
-                setUser({ ...data })
+                setUser({ ...data, password: '' })
             },
             error => {
                 Alert.alert(
@@ -29,6 +29,10 @@ export default ({ navigation }) => {
     }, []);
 
     const handleSubmit = () => {
+        const {nickname, password, email, birthDate} = user;
+        if(nickname.trim().length === 0 || password.trim().length === 0 || email.trim().length === 0 || birthDate.trim().length === 0){
+            return Alert.alert('Preencha todos os campos');
+        }
         sendData(ALTER_USER_MESSAGE, user,
             () => {
                 Alert.alert(
@@ -56,7 +60,7 @@ export default ({ navigation }) => {
             <Text style={GlobalStyles.header}>
                 Meus dados
             </Text>
-            <UserForm setUser={setUser} user={user} />
+            <UserForm setUser={setUser} user={user} edit/>
             <TouchableOpacity style={GlobalStyles.formButton} onPress={handleSubmit}>
                 <Text style={GlobalStyles.formButtonLabel}>
                     Salvar alterações
