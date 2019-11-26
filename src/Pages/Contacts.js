@@ -34,12 +34,12 @@ export default ({ navigation }) => {
         sendData(REMOVE_CONTACT_MESSAGE, { nickname },
             () => {
                 Alert.alert(
-                    'Usuário removido com sucesso',
+                    `Usuário ${nickname} removido com sucesso`,
+                    'Este usuário agora não está mais na sua lista de contatos',
                     [
                         { text: 'Ok' }
                     ]
                 );
-                setContacts(contacts.filter(contact => contact.id != id));
             },
             error => {
                 Alert.alert(
