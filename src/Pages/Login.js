@@ -60,7 +60,7 @@ export default ({ navigation }) => {
             <Dialog.Container visible={showPopup}>
                 <Dialog.Title>Configurar Ip</Dialog.Title>
                 <Dialog.Description>
-                    Adicione o Ip do servidor aqui
+                    Adicione o Ip do servidor aqui =)
           </Dialog.Description>
                 <Dialog.Input
                 style={Styles.popupInput}

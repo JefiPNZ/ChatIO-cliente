@@ -3,16 +3,20 @@ import TcpSocket from 'react-native-tcp-socket';
 const CHAT_PORT = 56001;
 let ClientConn;
 let Server;
+let clientHost;
 
 export const Connect = host => {
     if (!ClientConn) {
+        clientHost = host;
         ClientConn = TcpSocket.connect({ host, port: CHAT_PORT });
+        ClientConn.on('error', error => console.log(error));
     }
 }
 
 export const Close = () => {
-
-} //ClientConn.destroy();
+   // ClientConn.destroy();
+   //  ClientConn = null;
+} 
 
 export const OpenServer = (onMessageReceived) => {
     Server = TcpSocket.createServer(socket => {
@@ -38,14 +42,15 @@ export const OpenServer = (onMessageReceived) => {
             onMessageReceived(JSON.parse(message));
         }
     });
-};
+};  
 
 export const SendMessage = async (message, onError) => {
+    if(!ClientConn){
+        Connect(clientHost);
+    }
     if (typeof message !== 'string') {
         await ClientConn.write(JSON.stringify(message) + "\n");
     } else {
         await ClientConn.write(message + "\n");
     }
-
-    ClientConn.on('error', error => onError ? onError(error) : null);
 }

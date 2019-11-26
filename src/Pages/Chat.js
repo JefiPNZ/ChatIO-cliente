@@ -35,7 +35,10 @@ export default ({ navigation }) => {
     }, []);
 
     const handleMessage = message => {
-        Connect(ip.substr(0, 13));
+        console.log('IP',ip)
+        const operator = ip.indexOf(':');
+        console.log('ip formatado', ip.substr(0,operator))
+        Connect(ip.substr(0, operator));
         const newMessage = GiftedChat.append(messages, message);
         setMessages([...newMessage]);
         const lastMessage = newMessage[0];
@@ -44,6 +47,7 @@ export default ({ navigation }) => {
             _id: Math.floor(Math.random(100000)),
             user: {
                 _id: 2,
+                avatar: 'https://placeimg.com/140/140/any',
             }
         }),
             error => {

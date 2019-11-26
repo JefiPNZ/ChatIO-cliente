@@ -8,10 +8,9 @@ let serverIp;
 
 const Connect = () => {
   try {
-
     Server = TcpSocket.createConnection({
-     // host: serverIp,
-     host: '192.168.2.151',
+     //  host: serverIp,
+       host: '10.42.0.1',
       port: 56000,
       interface: 'wifi',
     });
@@ -20,6 +19,16 @@ const Connect = () => {
       dataFunction = data => { console.log(data.toString('utf8')) };
       Server.on('data', data => dataFunction(data.toString('utf8')));
     }
+
+    Server.on('error', error => {
+      console.log('erro na conexao do servidor', error);
+      closeConnection(); 
+    });
+
+    Server.on('close', () => {
+      console.log('Conexao com o servidor fechada');
+      closeConnection();
+    });
 
     BackgroundTimer.runBackgroundTimer(() => {
       sendData(CONNECTED_STATUS_MESSAGE, '', null, error => console.log('erro: ', error));
@@ -41,6 +50,7 @@ export const closeConnection = () => {
     sendData(LOGOUT_MESSAGE, '', null, error => console.log(error));
     Server.destroy();
     Server = null;
+    dataFunction = null;
   }
 }
 
@@ -54,6 +64,9 @@ export const sendData = async (messageType = '', message, onSuccess, onError) =>
       const status = message[1];
       const messageContent = message[2].trim().length > 0 ? JSON.parse(message[2]) : '';
 
+      if(onError && status === 'Usuário já conectado...'){
+        return onSuccess(messageContent)
+      }
       if (onError && status === ERROR_MESSAGE) {
         closeConnection();
         return onError(messageContent)
