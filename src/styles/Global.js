@@ -24,5 +24,9 @@ export default StyleSheet.create({
     },
     paddingView:{
         padding: 15,
+    },
+    centeredButtonIcon : {
+        alignSelf: 'center',
+        marginTop:20 
     }
 });

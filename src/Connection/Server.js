@@ -10,8 +10,8 @@ const Connect = () => {
   try {
 
     Server = TcpSocket.createConnection({
-      // host: serverIp,
-      host: '192.168.2.151',
+     // host: serverIp,
+     host: '192.168.2.151',
       port: 56000,
       interface: 'wifi',
     });

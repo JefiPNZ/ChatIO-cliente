@@ -42,7 +42,7 @@ const Routes = createAppContainer(
         Chat: {
             screen: Chat,
             navigationOptions: {
-                drawerLockMode: 'unlocked',
+                drawerLockMode: 'locked-closed',
             },
         }
     },
