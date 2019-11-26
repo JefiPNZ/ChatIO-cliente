@@ -4,10 +4,13 @@ import { SUCCESS_MESSAGE, ERROR_MESSAGE, DATA_MESSAGE, CONNECTED_STATUS_MESSAGE,
 
 let dataFunction;
 let Server;
+let serverIp;
 
 const Connect = () => {
+
   Server = TcpSocket.createConnection({
-    host: '192.168.2.151',
+    // host: serverIp,
+     host: '192.168.2.151',
     port: 56000,
     interface: 'wifi',
   });
@@ -23,16 +26,17 @@ const Connect = () => {
     8000);
 }
 
+export const updateServerIp = newIp =>{
+  serverIp = newIp;
+};
+
 export const closeConnection = () => {
   if (Server) {
-    BackgroundTimer.stopBackgroundTimer();
-    sendData(LOGOUT_MESSAGE, '', null, error => console.log(error));
-    Server.destroy();
+    //BackgroundTimer.stopBackgroundTimer();
+    //sendData(LOGOUT_MESSAGE, '', null, error => console.log(error));
+   // Server.destroy();
   }
 }
-
-
-
 
 export const sendData = async (messageType = '', message, onSuccess, onError) => {
   if (!Server) {
@@ -41,7 +45,6 @@ export const sendData = async (messageType = '', message, onSuccess, onError) =>
   dataFunction = response => {
     const message = response.match("([A-Z]+>?)(.*)");
     const status = message[1];
-    console.log(message[2])
     const messageContent = message[2].trim().length > 0 ? JSON.parse(message[2]) : '';
 
     if (onError && status === ERROR_MESSAGE) {

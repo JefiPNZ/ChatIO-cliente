@@ -3,9 +3,10 @@ import { Text, SafeAreaView, Alert, Modal, View } from 'react-native';
 import ContactList from '../components/ContactList';
 import GlobalStyles from '../styles/Global'
 import { sendData } from '../Connection/Server';
-import { GET_CONTACT_LIST_MESSAGE } from '../Connection/MessageTypes';
+import { GET_CONTACT_LIST_MESSAGE, REMOVE_CONTACT_MESSAGE } from '../Connection/MessageTypes';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Styles from '../styles/S.ContactsPage';
+import Dialog from 'react-native-dialog';
 
 export default ({ navigation }) => {
 
@@ -29,15 +30,16 @@ export default ({ navigation }) => {
             });
     }
     const handleRemoveContact = () => {
-        const { nickname } = selectedContact;
+        const { nickname, id } = selectedContact;
         sendData(REMOVE_CONTACT_MESSAGE, { nickname },
-            data => {
+            () => {
                 Alert.alert(
                     'Usuário removido com sucesso',
                     [
                         { text: 'Ok' }
                     ]
                 );
+                setContacts(contacts.filter(contact => contact.id != id));
             },
             error => {
                 Alert.alert(
@@ -48,7 +50,7 @@ export default ({ navigation }) => {
                     ]
                 );
             });
-        handleModal(!showModal);
+        handleModal(false);
     };
 
     const handleOpenModal = (contact) => {
@@ -60,27 +62,15 @@ export default ({ navigation }) => {
 
     return (
         <>
-            <Modal visible={showModal} transparent>
-                <View style={Styles.modal}>
-                    <View style={Styles.modalContainer}>
-                        <Text style={Styles.modalText}>
-                            Você realmente deseja excluir este contato?
-                        </Text>
-                        <View style={Styles.modalButtonContainer}>
-                            <TouchableOpacity onPress={() => handleModal(!showModal)} style={Styles.modalCloseButton}>
-                                <Text style={Styles.modalButtonText}>
-                                    Voltar
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={handleRemoveContact} style={Styles.modalDeleteButton}>
-                                <Text style={Styles.modalButtonText}>
-                                    Excluir
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
+            <Dialog.Container visible={showModal}>
+                <Dialog.Title>Excluir Contato</Dialog.Title>
+                <Dialog.Description>
+                    Você realmente deseja excluir o contato {selectedContact.nickname} ?
+                </Dialog.Description>
+                <Dialog.Button label="Voltar" onPress={() => handleModal(!showModal)} />
+                <Dialog.Button label="Excluir" onPress={handleRemoveContact} />
+            </Dialog.Container>
+
             <SafeAreaView style={GlobalStyles.paddingView}>
                 <Text style={GlobalStyles.header}>Lista de contatos</Text>
                 {contacts.length === 0 ? (
@@ -94,7 +84,7 @@ export default ({ navigation }) => {
                         <>
                             <ContactList contacts={contacts} navigation={navigation} refreshContacts={refreshContacts} handleOpenModal={handleOpenModal} />
                         </>
-                )}
+                    )}
             </SafeAreaView>
         </>
     );

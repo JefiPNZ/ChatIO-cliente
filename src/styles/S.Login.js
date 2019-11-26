@@ -31,4 +31,9 @@ export default StyleSheet.create({
         alignItems: 'stretch',
         width: '100%',
     },
+    popupInput:{
+        borderWidth: 1,
+        borderColor: '#ff5900',
+        borderRadius: 4,
+    },
 });
