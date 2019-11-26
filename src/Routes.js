@@ -9,12 +9,6 @@ import Chat from './Pages/Chat';
 
 const Routes = createAppContainer(
     createDrawerNavigator({
-        Chat: {
-            screen: Chat,
-            navigationOptions: {
-                drawerLockMode: 'unlocked',
-            },
-        },
         Login: {
             screen: Login,
             navigationOptions: {
@@ -45,6 +39,12 @@ const Routes = createAppContainer(
                 drawerLockMode: 'unlocked',
             },
         },
+        Chat: {
+            screen: Chat,
+            navigationOptions: {
+                drawerLockMode: 'unlocked',
+            },
+        }
     },
     )
 );
