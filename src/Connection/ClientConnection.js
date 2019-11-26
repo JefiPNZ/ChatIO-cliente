@@ -5,13 +5,16 @@ let ClientConn;
 let Server;
 
 export const Connect = host => {
-    console.log('conectando em:',host);
-    ClientConn = TcpSocket.connect({ host, port: CHAT_PORT });
+    if (!ClientConn) {
+        ClientConn = TcpSocket.connect({ host, port: CHAT_PORT });
+    }
 }
 
-export const Close = () => ClientConn.destroy();
+export const Close = () => {
 
-export const OpenServer = (host, onMessageReceived) => {
+} //ClientConn.destroy();
+
+export const OpenServer = (onMessageReceived) => {
     Server = TcpSocket.createServer(socket => {
         socket.on('data', data => {
             const message = data.toString('utf8');
@@ -27,7 +30,14 @@ export const OpenServer = (host, onMessageReceived) => {
         socket.on('close', (error) => {
             console.log('Closed connection with ', socket.address());
         });
-    }).listen(CHAT_PORT, host);
+    }).listen(CHAT_PORT);
+
+    Server.on('data', data => {
+        const message = data.toString('utf8');
+        if (onMessageReceived) {
+            onMessageReceived(JSON.parse(message));
+        }
+    });
 };
 
 export const SendMessage = async (message, onError) => {
