@@ -1,32 +1,43 @@
 import TcpSocket from 'react-native-tcp-socket';
 import BackgroundTimer from 'react-native-background-timer';
-import { SUCCESS_MESSAGE, ERROR_MESSAGE, DATA_MESSAGE, CONNECTED_STATUS_MESSAGE } from './MessageTypes';
+import { SUCCESS_MESSAGE, ERROR_MESSAGE, DATA_MESSAGE, CONNECTED_STATUS_MESSAGE, LOGOUT_MESSAGE } from './MessageTypes';
 
 let dataFunction;
-const Server = TcpSocket.createConnection({
- // host: '10.15.32.198',
-  host: '192.168.2.151',
-  port: 56000,
-  interface: 'wifi',
-});
+let Server;
 
-if (!dataFunction) {
-  dataFunction = data => { console.log(data.toString('utf8')) };
-  Server.on('data', data => dataFunction(data.toString('utf8')));
+const Connect = () => {
+  Server = TcpSocket.createConnection({
+    host: '192.168.2.151',
+    port: 56000,
+    interface: 'wifi',
+  });
+
+  if (!dataFunction) {
+    dataFunction = data => { console.log(data.toString('utf8')) };
+    Server.on('data', data => dataFunction(data.toString('utf8')));
+  }
+
+  BackgroundTimer.runBackgroundTimer(() => {
+    sendData(CONNECTED_STATUS_MESSAGE, '', null, error => console.log('erro: ', error));
+  },
+    8000);
 }
 
-BackgroundTimer.runBackgroundTimer(() => {
-  sendData(CONNECTED_STATUS_MESSAGE, '', null, error => console.log('erro: ', error));
-},
-  8000);
-
-export const closeConnection = ()=>{
-  Server.destroy();
+export const closeConnection = () => {
+  if (Server) {
+    BackgroundTimer.stopBackgroundTimer();
+    sendData(LOGOUT_MESSAGE, '', null, error => console.log(error));
+    Server.destroy();
+  }
 }
+
+
 
 
 export const sendData = async (messageType = '', message, onSuccess, onError) => {
-
+  if (!Server) {
+    Connect();
+  }
   dataFunction = response => {
     const message = response.match("([A-Z]+>?)(.*)");
     const status = message[1];
@@ -45,5 +56,4 @@ export const sendData = async (messageType = '', message, onSuccess, onError) =>
   } else {
     await Server.write(messageType + message + "\n");
   }
-
 }
