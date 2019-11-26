@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Alert } from 'react-native';
+import { Alert, TextInput, TouchableOpacity, Text } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { Connect, SendMessage, OpenServer, Close } from '../Connection/ClientConnection';
+import Global from '../styles/Global';
+import Styles from '../styles/S.Login';
 
 export default ({ navigation }) => {
-
+    const [myIp, setMyip] = useState('');
     const contact = navigation.getParam('contact', {});
     const ip = navigation.getParam('ip', '');
     // console.log('contato', contact,'ip', ip.substr(0,13));
     const port = 56001;
     const id = 1;
-    const myIp = '192.168.2.151';
+    // const myIp = '192.168.2.151';
+    // const myIp = '192.168.2.151';
     // 192.168.0.10238559
 
     const [messages, setMessages] = useState([
@@ -25,14 +28,14 @@ export default ({ navigation }) => {
             },
         }
     ]);
-
-    useEffect(() => {
+    const handleOpenServer = () => {
+        console.log(myIp)
         OpenServer(myIp, message => {
             const newMessage = GiftedChat.append(messages, message);
             setMessages([])
             setMessages([...newMessage]);
         });
-    }, []);
+    }
 
     const handleMessage = data => {
         Connect(ip.substr(0, 13));
@@ -54,7 +57,17 @@ export default ({ navigation }) => {
         Close();
     };
 
+    const handleChange = text => {
+        setMyip(text);
+    }
+
     return (
-        <GiftedChat messages={messages} user={{ _id: id }} onSend={handleMessage} />
+        <>
+            <TextInput onChangeText={text => handleChange(text)} style={Styles.input} />
+            <TouchableOpacity onPress={handleOpenServer} style={Global.formButton}>
+                <Text style={Global.formButtonLabel}>Set Ip</Text>
+            </TouchableOpacity>
+            <GiftedChat messages={messages} user={{ _id: id }} onSend={handleMessage} />
+        </>
     );
 };
